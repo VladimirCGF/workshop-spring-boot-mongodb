@@ -3,6 +3,7 @@ package com.example.workshopmongodb.resources;
 import com.example.workshopmongodb.domain.Post;
 import com.example.workshopmongodb.domain.User;
 import com.example.workshopmongodb.dto.UserDTO;
+import com.example.workshopmongodb.repository.util.URL;
 import com.example.workshopmongodb.services.PostService;
 import com.example.workshopmongodb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class PostResource {
     public ResponseEntity<List<Post>> findById(@PathVariable String id) {
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(Collections.singletonList(obj));
+    }
+
+    @RequestMapping(value = "/titlesearch", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+        text = URL.decodeParam(text);
+        List<Post> list = service.findByTitle(text);
+        return ResponseEntity.ok().body(list);
     }
 
 
